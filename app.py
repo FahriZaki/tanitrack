@@ -4,7 +4,7 @@ from tensorflow.keras.preprocessing.image import img_to_array, load_img
 import numpy as np
 
 # Load model
-model = load_model('modelskripsi_padi.h5')
+model = load_model('modelskripsi_padi.h5', compile=False)
 labels = ['Blast', 'Blight', 'Tungro']
 
 # Fungsi prediksi
