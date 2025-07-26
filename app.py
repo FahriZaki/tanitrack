@@ -120,29 +120,28 @@ elif menu == "Prediksi Penyakit":
     
     uploaded_file = st.file_uploader("📁 Pilih gambar daun...", type=["jpg", "jpeg", "png"])
     
-if uploaded_file is not None:
-    st.image(uploaded_file, caption="🖼️ Gambar yang diunggah", use_container_width=False, width=200)
+    if uploaded_file is not None:
+        st.image(uploaded_file, caption="🖼️ Gambar yang diunggah", use_container_width=False, width=200)
 
-    with st.spinner("🔎 Mengecek validitas gambar..."):
-        if not dominan_hijau(uploaded_file):
-            st.error("❌ Gambar tidak dikenali sebagai daun padi.\nSilahkan nggah ulang dengan gambar yang lebih jelas.")
-        else:
-            with st.spinner("🔎 Menganalisis gambar..."):
-                label, confidence = predict(uploaded_file)
-
-            # Batas kepercayaan
-            threshold = 0.6
-            if confidence < threshold:
-                st.error("❌ Gambar tidak dikenali sebagai daun padi.\nSilahkan unggah gambar daun padi yang lebih jelas.")
+        with st.spinner("🔎 Mengecek validitas gambar..."):
+            if not dominan_hijau(uploaded_file):
+                st.error("❌ Gambar tidak dikenali sebagai daun padi.\nSilahkan unggah ulang dengan gambar yang lebih jelas.")
             else:
-                st.success("✅ Analisis selesai!")
-                st.markdown(f"### 🌱 Hasil Prediksi: **{label}**")
-                st.markdown(f"📊 Tingkat Keyakinan: **{confidence:.2%}**")
+                with st.spinner("🔎 Menganalisis gambar..."):
+                    label, confidence = predict(uploaded_file)
 
-                if label == "Blast":
-                    st.info("**Saran Penanganan:**\n\nPengobatan benih dengan thiram efektif melawan penyakit ini. Fungsida yang mengandung azoksistrobin, atau bahan aktif dari triazol atau strobilurin juga dapat disemprotkan pada tahap pembibitan.")
-                elif label == "Blight":
-                    st.info("**Saran Penanganan:**\n\nPerawatan benih dengan antibiotik resmi dan tembaga oksiklorida atau tembaga sulfat direkomendasikan serta kontrol irigasi.")
-                elif label == "Tungro":
-                    st.info("**Saran Penanganan:**\n\nPenyemprotan insektisida berbasis buprofezin atau pimetrozin pada 15–30 hari setelah tanam dapat membantu mengatasi tungro.")
+                # Batas kepercayaan
+                threshold = 0.6
+                if confidence < threshold:
+                    st.error("❌ Gambar tidak dikenali sebagai daun padi.\nSilahkan unggah gambar daun padi yang lebih jelas.")
+                else:
+                    st.success("✅ Analisis selesai!")
+                    st.markdown(f"### 🌱 Hasil Prediksi: **{label}**")
+                    st.markdown(f"📊 Tingkat Keyakinan: **{confidence:.2%}**")
 
+                    if label == "Blast":
+                        st.info("**Saran Penanganan:**\n\nPengobatan benih dengan thiram efektif melawan penyakit ini. Fungsida yang mengandung azoksistrobin, atau bahan aktif dari triazol atau strobilurin juga dapat disemprotkan pada tahap pembibitan.")
+                    elif label == "Blight":
+                        st.info("**Saran Penanganan:**\n\nPerawatan benih dengan antibiotik resmi dan tembaga oksiklorida atau tembaga sulfat direkomendasikan serta kontrol irigasi.")
+                    elif label == "Tungro":
+                        st.info("**Saran Penanganan:**\n\nPenyemprotan insektisida berbasis buprofezin atau pimetrozin pada 15–30 hari setelah tanam dapat membantu mengatasi tungro.")
